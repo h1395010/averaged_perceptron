@@ -90,22 +90,21 @@ class Perceptron
        
        
        int size = globoDictSize + 1;
-       //compute averages
+     //compute averages
        double[] sums = new double[size];
        double[] averages = new double[size];
 
        for (Entry<Integer, double[]> entry : cached_weights.entrySet()) 
        {
            double[] value = entry.getValue();
-           for(int pos = 0; pos < size; pos++)
+           for(int pos=0; pos < size; pos++)
            {
                sums[ pos ] +=  value[ pos ]; 
            }
        }
-       for(int pos = 0; pos < size; pos++)
+       for(int pos=0; pos < size; pos++)
        {
-           averages[ pos ] = sums[ pos ] / size;
-           weights[ pos ] = averages[ pos ];
+           averages[ pos ] = sums[ pos ] / cached_weights.size(); 
        }
        
        
