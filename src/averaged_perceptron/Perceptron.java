@@ -19,7 +19,7 @@ class Perceptron
    static final double THETA = 0;
    
    static final String LABEL = "atheism";
-   //static final String FILEPATH = "sports";
+   //static final String LABEL = "sports";
    
    //1 or 0 corresponding to the feature vector for aetheism or sports
    //static final int TEST_CLASS = 0;
@@ -45,8 +45,6 @@ class Perceptron
            //weights[i] = randomNumber(0,1);
            weights[i] = 0.0;
        }
-       
-       final double[] AVERAGED_WEIGHTS = new double[globoDictSize + 1];
        
 
        int inputSize = trainingPerceptronInput.size();
@@ -84,36 +82,46 @@ class Perceptron
            cached_weights.put( iteration , weights );
            
            /* Root Mean Squared Error */
-           //System.out.println("Iteration " + iteration + " : RMSE = " + Math.sqrt(globalError / inputSize));
+           System.out.println("Iteration " + iteration + " : RMSE = " + Math.sqrt(globalError / inputSize));
        } 
        while (globalError != 0 && iteration <= MAX_ITER);
        
        
-       //calc averages
+       
+       
+       int size = globoDictSize + 1;
+       //compute averages
+       double[] sums = new double[size];
+       double[] averages = new double[size];
+
        for (Entry<Integer, double[]> entry : cached_weights.entrySet()) 
        {
-    	    int key = entry.getKey();
-    	    double[] value = entry.getValue();
-    	    AVERAGED_WEIGHTS[ key - 1 ] +=  value[ key - 1 ]; 
-    	    
-    	    if (key == iteration) 
-    	    {
-    	    	AVERAGED_WEIGHTS[ key - 1 ] /= key;
-    	    }
-    	}
-       for(int i = 0; i < weights.length; i++)
-       {
-    	   weights[i] = AVERAGED_WEIGHTS[i];
+           double[] value = entry.getValue();
+           for(int pos = 0; pos < size; pos++)
+           {
+               sums[ pos ] +=  value[ pos ]; 
+           }
        }
+       for(int pos = 0; pos < size; pos++)
+       {
+           averages[ pos ] = sums[ pos ] / size;
+           weights[ pos ] = averages[ pos ];
+       }
+       
+       
+       
+       
+       
+       
        
 
        System.out.println("\n=======\nDecision boundary equation:");
        int i;
        for (i = 0; i < a.length; i++) 
        {
-           //System.out.print(" a");
-           //if (i < 10) System.out.print(0);
-           //System.out.println( i + " * " + weights[i] + " + " );
+           System.out.print(" a");
+           if (i < 10) System.out.print(0);
+           System.out.println( i + " * " + weights[i] + " + " );
            
        	
        }
